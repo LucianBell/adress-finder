@@ -1,5 +1,8 @@
 package br.com.adressFinder.main;
 
+import br.com.adressFinder.model.Adress;
+import br.com.adressFinder.api.cepApi;
+
 import java.util.Scanner;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -15,8 +18,15 @@ public class Main {
             System.out.println("Olá, seja bem-vindo ao AdressFinder");
             System.out.println("Para começar, me diga, qual seu nome?");
             nome = leitura.nextLine();
+
             System.out.println("Perfeito, " + nome + "! Agora, qual é seu CEP?");
             entrada = leitura.nextLine();
+
+            Adress cep = new Adress();
+            cep.setCEP(entrada);
+
+            cepApi cepAPI = new cepApi();
+            cepAPI.searchCep(cep);
         }
     }
 }

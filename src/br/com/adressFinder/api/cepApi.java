@@ -9,19 +9,19 @@ import java.net.http.HttpResponse;
 
 public class cepApi {
 
-    public static void main(String[] args) {
-        Adress data = new Adress();
-
-        String adress = "https://viacep.com.br/ws/" + data.getCEP() + "/json";
+    public void searchCep(Adress adress) {
+        String cep = adress.getCEP();
+        String apiEndpoint = "https://viacep.com.br/ws/" + cep + "/json";
 
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(adress))
+                    .uri(URI.create(apiEndpoint))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            System.out.println(response.body());
+            String json = response.body();
         } catch (Error | IOException | InterruptedException error) {
             System.out.println("Error: " + error);
         }

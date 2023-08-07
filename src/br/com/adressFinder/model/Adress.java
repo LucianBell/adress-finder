@@ -11,4 +11,8 @@ public class Adress {
     public String getCEP() {
         return CEP;
     }
+
+    public void setCEP(String CEP) {
+        this.CEP = CEP;
+    }
 }
