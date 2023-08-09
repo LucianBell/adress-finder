@@ -9,9 +9,10 @@ import java.net.http.HttpResponse;
 
 public class cepApi {
 
-    public void searchCep(Adress adress) {
+    public String searchCep(Adress adress) {
         String cep = adress.getCEP();
         String apiEndpoint = "https://viacep.com.br/ws/" + cep + "/json";
+        String json = null;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -21,9 +22,11 @@ public class cepApi {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println(response.body());
-            String json = response.body();
+            json = response.body();
+
         } catch (Error | IOException | InterruptedException error) {
             System.out.println("Error: " + error);
         }
+        return json;
     }
 }

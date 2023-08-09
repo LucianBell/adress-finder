@@ -3,10 +3,7 @@ package br.com.adressFinder.model;
 public class Adress {
 
         private String CEP;
-        private String logradouro;
-        private String bairro;
-        private String localidade;
-        private String uf;
+        private String datails;
 
     public String getCEP() {
         return CEP;
@@ -14,5 +11,13 @@ public class Adress {
 
     public void setCEP(String CEP) {
         this.CEP = CEP;
+    }
+
+    public String getDatails() {
+        return datails;
+    }
+
+    public void setDatails(String datails) {
+        this.datails = datails;
     }
 }

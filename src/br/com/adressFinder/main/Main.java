@@ -3,8 +3,7 @@ package br.com.adressFinder.main;
 import br.com.adressFinder.model.Adress;
 import br.com.adressFinder.api.cepApi;
 
-import java.io.File;
-import java.io.FileWriter;
+import br.com.adressFinder.service.fileGenerator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,28 +16,31 @@ public class Main {
         Scanner leitura = new Scanner(System.in);
         String entrada = " ";
         String nome = " ";
-        List<Adress> adresses = new ArrayList<>();
 
         while (!entrada.equalsIgnoreCase("sair")) {
-            System.out.println("***********************************");
-            System.out.println("Olá, seja bem-vindo ao AdressFinder");
-            System.out.println("Para começar, me diga, qual seu nome?");
-            nome = leitura.nextLine();
+            try {
+                System.out.println("***********************************");
+                System.out.println("Olá, seja bem-vindo ao AdressFinder");
+                System.out.println("Para começar, me diga, qual seu nome?");
+                nome = leitura.nextLine();
 
-            System.out.println("Perfeito, " + nome + "! Agora, qual é seu CEP?");
-            entrada = leitura.nextLine();
+                System.out.println("Perfeito, " + nome + "! Agora, qual é seu CEP?");
+                entrada = leitura.nextLine();
 
-            Adress cep = new Adress();
-            cep.setCEP(entrada);
-            adresses.add(cep);
+                Adress cep = new Adress();
+                cep.setCEP(entrada);
 
-            cepApi cepAPI = new cepApi();
-            cepAPI.searchCep(cep);
+                cepApi cepAPI = new cepApi();
+                cepAPI.searchCep(cep);
+                cep.setDatails(cepAPI.searchCep(cep));
 
+                fileGenerator generator = new fileGenerator();
+                generator.saveJSON(cep);
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("Finalizando aplicação");
+            }
         }
-
-        FileWriter write = new FileWriter("Data.json");
-        write.write(adresses.toString());
-        write.close();
     }
 }
