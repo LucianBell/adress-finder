@@ -1,7 +1,8 @@
 package br.com.adressFinder.api;
 
 import br.com.adressFinder.model.Adress;
-import java.io.IOException;
+import com.google.gson.Gson;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -9,24 +10,21 @@ import java.net.http.HttpResponse;
 
 public class cepApi {
 
-    public String searchCep(Adress adress) {
-        String cep = adress.getCEP();
-        String apiEndpoint = "https://viacep.com.br/ws/" + cep + "/json";
-        String json = null;
+    public Adress buscaEndereco(String cep) {
+        URI endereco = URI.create("https://viacep.com.br/ws/" + cep + "/json/");
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(endereco)
+                .build();
 
         try {
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiEndpoint))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
-            json = response.body();
-
-        } catch (Error | IOException | InterruptedException error) {
-            System.out.println("Error: " + error);
+            HttpResponse<String> response = HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+            return new Gson().fromJson(response.body(), Adress.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Não consegui obter o endereço a partir desse CEP.");
         }
-        return json;
+
     }
 }
